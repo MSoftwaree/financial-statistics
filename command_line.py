@@ -1,8 +1,27 @@
 from finance import Finance
 
 
-class CommandLine:
+class CommandLine(Finance):
     needed_data_for_month = ["month", "income", "vat", "tax", "zus"]
+
+    def __init__(self):
+        super().__init__()
+
+    @staticmethod
+    def show_main_view():
+        """
+        Show main view for the user and get a response from him
+        :return:
+        """
+        return input("Welcome in Finance Statistics application!\n"
+                     "What do you want to do?\n\n"
+                     "1. Create new table\n"
+                     "2. Add new month to the table\n"
+                     "3. Update values in specific month\n"
+                     "4. Delete month from table\n"
+                     "5. Visualize finance statistics\n"
+                     "6. Exit\n\n"
+                     "Your choice: ")
 
     def prepare_data_for_one_month(self):
         """
@@ -55,4 +74,4 @@ class CommandLine:
 
 
 cmd = CommandLine()
-cmd.prepare_data_for_one_month()
+cmd.show_main_view()

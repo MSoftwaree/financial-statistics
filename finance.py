@@ -2,9 +2,9 @@ import sqlite3
 
 
 class Finance:
-    def __init__(self, file_path):
+    def __init__(self):
         try:
-            self.conn = sqlite3.connect(file_path)
+            self.conn = sqlite3.connect('finance.db')
             self.c = self.conn.cursor()
         except sqlite3.Error as e:
             print(e)
@@ -61,7 +61,7 @@ class Finance:
         self.conn.commit()
 
 
-finance = Finance('finance.db')
+finance = Finance()
 
 all_data = {"month": "February", "income": 16500, "vat": 3605, "tax": 2500, "zus": 1500, "payout": 9500}
 
