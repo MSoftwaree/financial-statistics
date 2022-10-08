@@ -59,3 +59,13 @@ class Finance:
         query = f"UPDATE YEAR_{year} SET {column} = \"{new_value}\" WHERE {column} = \"{old_value}\""
         self.c.execute(query)
         self.conn.commit()
+
+    def delete_month(self, year: int, month: str):
+        """
+        Delete whole month from the table.
+        :param year: The table name
+        :param month: The name of the month to be deleted
+        """
+        query = f"DELETE FROM YEAR_{year} WHERE month=\"{month}\""
+        self.c.execute(query)
+        self.conn.commit()
