@@ -80,7 +80,7 @@ class CommandLine(Finance):
         :return:
         """
         data = self._get_information_from_user()
-        data = self._change_format_to_int(data)
+        data = self._change_format_to_float(data)
         data = self._calculate_payout(data)
         return data
 
@@ -98,16 +98,16 @@ class CommandLine(Finance):
         return data
 
     @staticmethod
-    def _change_format_to_int(data: dict) -> dict:
+    def _change_format_to_float(data: dict) -> dict:
         """
-        Change all data format to integer without month value
+        Change all data format to float without month value
         :param data: Prepared dictionary from _get_information_from_user() function
         :return: The same dictionary with corrected data format
         """
         for key, value in data.items():
             if key == 'month':
                 continue
-            data[key] = int(value)
+            data[key] = float(value)
 
         return data
 
@@ -115,7 +115,7 @@ class CommandLine(Finance):
     def _calculate_payout(data: dict) -> dict:
         """
         Payout calculation based on user values
-        :param data: Prepared dictionary with integers data format
+        :param data: Prepared dictionary with float data format
         :return: Dictionary with added payout
         """
         payout = data['income'] - data['vat'] - data['tax'] - data['zus']
