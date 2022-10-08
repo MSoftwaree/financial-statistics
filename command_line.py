@@ -43,6 +43,18 @@ class CommandLine(Finance):
             self._clear_console()
             self.main_thread()
 
+        elif response == "5":
+            year = int(input("Enter the year: "))
+            month = input("Enter the month: ")  # TODO: add security in the event that there is no such month
+            self.delete_month(year, month)
+            self._clear_console()
+            self.main_thread()
+
+        elif response == "6":
+            input("Coming soon!")
+            self._clear_console()
+            self.main_thread()
+
         elif response == "7":
             sys.exit()
 
@@ -57,8 +69,8 @@ class CommandLine(Finance):
                      "2. Add new month to the table\n"
                      "3. Read values from specific month\n"
                      "4. Update values in specific month\n"
-                     # "5. Delete month from table\n"
-                     # "6. Visualize finance statistics\n"
+                     "5. Delete month from table\n"
+                     "6. Visualize finance statistics\n"
                      "7. Exit\n\n"
                      "Your choice: ")
 
