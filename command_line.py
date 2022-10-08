@@ -1,29 +1,68 @@
 from finance import Finance
+import sys
+import os
 
 
 class CommandLine(Finance):
     needed_data_for_month = ["month", "income", "vat", "tax", "zus"]
 
     def __init__(self):
+        print("Welcome in Finance Statistics application!")
         super().__init__()
 
+    def main_thread(self):
+        response = self._show_main_view()
+
+        if response == "1":
+            year = int(input("Enter the year: "))
+            self.create_new_table(year)
+            self._clear_console()
+            self.main_thread()
+
+        elif response == "2":
+            year = int(input("Enter the year: "))
+            data = self._prepare_data_for_one_month()
+            self.add_value_to_table(year, data)
+            self._clear_console()
+            self.main_thread()
+
+        elif response == "3":
+            year = int(input("Enter the year: "))
+            month = input("Enter the month: ")  # TODO: add security in the event that there is no such month
+            month, income, vat, tax, zus, payout = self.read_values_from_month(year, month)
+            input(f"Month: {month}, Income: {income}, VAT: {vat}, Tax: {tax}, ZUS: {zus}, Payout: {payout}")
+            self._clear_console()
+            self.main_thread()
+
+        elif response == "4":
+            year = int(input("Enter the year: "))
+            column = input("Enter the column you want to make changes to: ") # TODO: add security in the event that there is no such column
+            old_value = input("Enter the old value: ")  # TODO: add security in the event that there is no such value
+            new_value = input("Enter the new value: ")
+            self.update_value_in_month(year, column, old_value, new_value)
+            self._clear_console()
+            self.main_thread()
+
+        elif response == "7":
+            sys.exit()
+
     @staticmethod
-    def show_main_view():
+    def _show_main_view():
         """
         Show main view for the user and get a response from him
-        :return:
+        :return: Response with chosen number
         """
-        return input("Welcome in Finance Statistics application!\n"
-                     "What do you want to do?\n\n"
+        return input("What do you want to do?\n\n"
                      "1. Create new table\n"
                      "2. Add new month to the table\n"
-                     "3. Update values in specific month\n"
-                     "4. Delete month from table\n"
-                     "5. Visualize finance statistics\n"
-                     "6. Exit\n\n"
+                     "3. Read values from specific month\n"
+                     "4. Update values in specific month\n"
+                     # "5. Delete month from table\n"
+                     # "6. Visualize finance statistics\n"
+                     "7. Exit\n\n"
                      "Your choice: ")
 
-    def prepare_data_for_one_month(self):
+    def _prepare_data_for_one_month(self):
         """
         Prepare all needed information for one month in specific dict format
         :return:
@@ -31,7 +70,7 @@ class CommandLine(Finance):
         data = self._get_information_from_user()
         data = self._change_format_to_int(data)
         data = self._calculate_payout(data)
-        print(data)
+        return data
 
     def _get_information_from_user(self) -> dict:
         """
@@ -72,6 +111,10 @@ class CommandLine(Finance):
 
         return data
 
+    @staticmethod
+    def _clear_console():
+        os.system('cls')
+
 
 cmd = CommandLine()
-cmd.show_main_view()
+cmd.main_thread()
