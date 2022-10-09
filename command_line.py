@@ -92,22 +92,29 @@ class CommandLine(Finance):
         sys.exit()
         # TODO: add closing finance.db file
 
-    @staticmethod
-    def _show_main_view():
+    def _show_main_view(self):
         """
         Show main view for the user and get a response from him
         :return: Response with chosen number
         """
-        # TODO: add security in the event that there is wrong response from the user
-        return input("What do you want to do?\n\n"
-                     "1. Create new table\n"
-                     "2. Add new month to the table\n"
-                     "3. Read values from specific month\n"
-                     "4. Update values in specific month\n"
-                     "5. Delete month from table\n"
-                     "6. Visualize finance statistics\n"
-                     "7. Exit\n\n"
-                     "Your choice: ")
+        response_flag = False
+        while response_flag is False:
+            response = input("What do you want to do?\n\n"
+                             "1. Create new table\n"
+                             "2. Add new month to the table\n"
+                             "3. Read values from specific month\n"
+                             "4. Update values in specific month\n"
+                             "5. Delete month from table\n"
+                             "6. Visualize finance statistics\n"
+                             "7. Exit\n\n"
+                             "Your choice: ")
+            response_flag = self._verify_chosen_number(response)
+        return response
+
+    def _verify_chosen_number(self, response):
+        if response not in self.response_options.keys():
+            input("You choose wrong number! Try again.")
+            return False
 
     def _prepare_data_for_one_month(self):
         """
