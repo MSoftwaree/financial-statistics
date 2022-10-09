@@ -1,9 +1,9 @@
-from finance import Finance
+from data_visualization import DataVisualization
 import sys
 import os
 
 
-class CommandLine(Finance):
+class CommandLine(DataVisualization):
     needed_data_for_month = ["month", "income", "vat", "tax", "zus"]
 
     def __init__(self):
@@ -100,7 +100,8 @@ class CommandLine(Finance):
         """
         Visualization of finance statistics
         """
-        input("Coming soon!")
+        year = input("Enter the year: ")
+        self.year_plot(year)
         self._clear_console()
         self.main_thread()
 
