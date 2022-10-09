@@ -18,16 +18,25 @@ class CommandLine(Finance):
         super().__init__()
 
     def main_thread(self):
+        """
+        Main thread serving the user's console
+        """
         response = self._show_main_view()
         self.response_options[response]()
 
     def response_create_new_table(self):
+        """
+        Create new table
+        """
         year = int(input("Enter the year: "))
         self.create_new_table(year)
         self._clear_console()
         self.main_thread()
 
     def response_add_new_month(self):
+        """
+        Add new month to the selected year
+        """
         year = int(input("Enter the year: "))
         data = self._prepare_data_for_one_month()
         self.add_value_to_table(year, data)
@@ -35,6 +44,9 @@ class CommandLine(Finance):
         self.main_thread()
 
     def response_read_values(self):
+        """
+        Read all values from the selected month
+        """
         year = int(input("Enter the year: "))
         month = input("Enter the month: ")  # TODO: add security in the event that there is no such month
         month, income, vat, tax, zus, payout = self.read_values_from_month(year, month)
@@ -43,6 +55,9 @@ class CommandLine(Finance):
         self.main_thread()
 
     def response_update_values(self):
+        """
+        Updating the value in the selected column
+        """
         year = int(input("Enter the year: "))
         column = input("Enter the column you want to make changes to: ")  # TODO: add security in the event that there is no such column
         old_value = input("Enter the old value: ")  # TODO: add security in the event that there is no such value
@@ -52,6 +67,9 @@ class CommandLine(Finance):
         self.main_thread()
 
     def response_delete_month(self):
+        """
+        Removing the month from the selected table
+        """
         year = int(input("Enter the year: "))
         month = input("Enter the month: ")  # TODO: add security in the event that there is no such month
         self.delete_month(year, month)
@@ -59,13 +77,20 @@ class CommandLine(Finance):
         self.main_thread()
 
     def response_visualize(self):
+        """
+        Visualization of finance statistics
+        """
         input("Coming soon!")
         self._clear_console()
         self.main_thread()
 
     @staticmethod
     def response_exit():
+        """
+        Safely quitting the program
+        """
         sys.exit()
+        # TODO: add closing finance.db file
 
     @staticmethod
     def _show_main_view():
@@ -135,6 +160,9 @@ class CommandLine(Finance):
 
     @staticmethod
     def _clear_console():
+        """
+        Clear user console after making selection
+        """
         os.system('cls')
 
 
