@@ -64,7 +64,7 @@ class CommandLine(Finance):
         """
         Updating the value in the selected column
         """
-        global column, old_value
+        # global column, old_value
 
         column_flag, value_flag = False, False
         year = int(input("Enter the year: "))
@@ -144,7 +144,7 @@ class CommandLine(Finance):
             return False
 
     def _verify_column_name(self, year, column):
-        columns = self.get_columns_names(year)
+        columns = self.get_column_names(year)
         if column not in columns:
             input(f"You choose wrong column name!\n"
                   f"Correct values: {columns}")

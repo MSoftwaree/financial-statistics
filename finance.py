@@ -49,6 +49,12 @@ class Finance:
         return self.c.fetchone()
 
     def read_values_from_column(self, year: int, column: str) -> list:
+        """
+        Return all values from selected column
+        :param year: The table name
+        :param column: The column name
+        :return: List of values in selected column
+        """
         query = f"SELECT {column} FROM YEAR_{year}"
         self.c.execute(query)
         return [value[0] for value in self.c.fetchall()]
@@ -75,6 +81,11 @@ class Finance:
         self.c.execute(query)
         self.conn.commit()
 
-    def get_columns_names(self, year: int) -> list:
+    def get_column_names(self, year: int) -> list:
+        """
+        Return a complete list of column names
+        :param year: The table name
+        :return: List of column names
+        """
         cursor = self.c.execute(f"SELECT * FROM YEAR_{year}")
         return list(map(lambda value: value[0].lower(), cursor.description))
