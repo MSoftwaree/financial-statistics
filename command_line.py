@@ -64,7 +64,6 @@ class CommandLine(Finance):
         """
         Updating the value in the selected column
         """
-        # global column, old_value
 
         column_flag, value_flag = False, False
         year = int(input("Enter the year: "))
@@ -132,11 +131,23 @@ class CommandLine(Finance):
         return response
 
     def _verify_chosen_number(self, response):
+        """
+        Verification chosen number in main view. When is not correct, the function return False
+        :param response: User response from main view
+        :return: False when the response is wrong
+        """
         if response not in self.response_options.keys():
             input("You choose wrong number! Try again.")
             return False
 
     def _verify_value_in_the_column(self, year, column, value):
+        """
+        Verification whether the given value appears in a given column
+        :param year: The table name
+        :param column: The column name
+        :param value: Value in specified column
+        :return: False when the value is wrong
+        """
         values = self.read_values_from_column(year, column)
         if value not in values:
             input(f"You choose wrong value!\n"
@@ -144,6 +155,12 @@ class CommandLine(Finance):
             return False
 
     def _verify_column_name(self, year, column):
+        """
+        Verification if the given column name exists
+        :param year: The table name
+        :param column: The column name
+        :return: False if column name is wrong
+        """
         columns = self.get_column_names(year)
         if column not in columns:
             input(f"You choose wrong column name!\n"
@@ -153,7 +170,7 @@ class CommandLine(Finance):
     def _prepare_data_for_one_month(self):
         """
         Prepare all needed information for one month in specific dict format
-        :return:
+        :return: Data in an appropriately prepared dictionary format
         """
         data = self._get_information_from_user()
         data = self._change_format_to_float(data)
