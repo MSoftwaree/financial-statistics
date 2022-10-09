@@ -3,6 +3,8 @@ import sqlite3
 
 class Finance:
     def __init__(self):
+        self.currency = "zł"
+
         try:
             self.conn = sqlite3.connect('finance.db')
             self.c = self.conn.cursor()
@@ -89,3 +91,46 @@ class Finance:
         """
         cursor = self.c.execute(f"SELECT * FROM YEAR_{year}")
         return list(map(lambda value: value[0].lower(), cursor.description))
+
+    def get_the_best_month(self, year: int) -> tuple:
+        """
+        Find the best month in the whole year
+        :param year: The table name
+        :return: The best month with the highest payout in the whole year, returned as a tuple
+        """
+        payouts = [float(payout) for payout in self.read_values_from_column(year, "payout")]
+        best_payout = max(payouts)
+        best_month = self.get_month_from_payout(year, best_payout)
+        return best_month, best_payout
+
+    def get_the_worst_month(self, year: int) -> tuple:
+        """
+        Find the worst month in the whole year
+        :param year: The table name
+        :return: The worst month with the smallest payout in the whole year, returned as a tuple
+        """
+        payouts = [float(payout) for payout in self.read_values_from_column(year, "payout")]
+        worst_payout = min(payouts)
+        worst_month = self.get_month_from_payout(year, worst_payout)
+        return worst_month, worst_payout
+
+    def get_month_from_payout(self, year: int, payout: float) -> str:
+        """
+        Find month based on the payout value
+        :param year: The table name
+        :param payout: Value of payout
+        :return: The name of the month with specified payout
+        """
+        query = f"SELECT * FROM YEAR_{year} WHERE payout='{payout}'"
+        self.c.execute(query)
+        return self.c.fetchone()[0]
+
+    def get_whole_information_from_year(self, year: int) -> list:
+        """
+        Return whole information from the table
+        :param year: The table name
+        :return: List with all information for every month 
+        """
+        query = f"SELECT * FROM YEAR_{year}"
+        self.c.execute(query)
+        return self.c.fetchall()
