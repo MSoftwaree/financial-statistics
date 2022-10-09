@@ -48,6 +48,11 @@ class Finance:
 
         return self.c.fetchone()
 
+    def read_values_from_column(self, year: int, column: str) -> list:
+        query = f"SELECT {column} FROM YEAR_{year}"
+        self.c.execute(query)
+        return [value[0] for value in self.c.fetchall()]
+
     def update_value_in_month(self, year: int, column, old_value, new_value):
         """
         Update value in the specific month.
@@ -69,3 +74,7 @@ class Finance:
         query = f"DELETE FROM YEAR_{year} WHERE month=\"{month}\""
         self.c.execute(query)
         self.conn.commit()
+
+    def get_columns_names(self, year: int) -> list:
+        cursor = self.c.execute(f"SELECT * FROM YEAR_{year}")
+        return list(map(lambda value: value[0].lower(), cursor.description))

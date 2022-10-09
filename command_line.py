@@ -37,6 +37,7 @@ class CommandLine(Finance):
         """
         Add new month to the selected year
         """
+        # TODO: add security on the event when year is wrong
         year = int(input("Enter the year: "))
         data = self._prepare_data_for_one_month()
         self.add_value_to_table(year, data)
@@ -47,8 +48,13 @@ class CommandLine(Finance):
         """
         Read all values from the selected month
         """
+        month_flag = False
         year = int(input("Enter the year: "))
-        month = input("Enter the month: ")  # TODO: add security in the event that there is no such month
+
+        while month_flag is False:
+            month = input("Enter the month: ")
+            month_flag = self._verify_value_in_the_column(year, "month", month)
+
         month, income, vat, tax, zus, payout = self.read_values_from_month(year, month)
         input(f"Month: {month}, Income: {income}, VAT: {vat}, Tax: {tax}, ZUS: {zus}, Payout: {payout}")
         self._clear_console()
@@ -58,9 +64,19 @@ class CommandLine(Finance):
         """
         Updating the value in the selected column
         """
+        global column, old_value
+
+        column_flag, value_flag = False, False
         year = int(input("Enter the year: "))
-        column = input("Enter the column you want to make changes to: ")  # TODO: add security in the event that there is no such column
-        old_value = input("Enter the old value: ")  # TODO: add security in the event that there is no such value
+
+        while column_flag is False:
+            column = input("Enter the column you want to make changes to: ")
+            column_flag = self._verify_column_name(year, column)
+
+        while value_flag is False:
+            old_value = input("Enter the old value: ")
+            value_flag = self._verify_value_in_the_column(year, column, old_value)
+
         new_value = input("Enter the new value: ")
         self.update_value_in_month(year, column, old_value, new_value)
         self._clear_console()
@@ -70,8 +86,13 @@ class CommandLine(Finance):
         """
         Removing the month from the selected table
         """
+        month_flag = False
         year = int(input("Enter the year: "))
-        month = input("Enter the month: ")  # TODO: add security in the event that there is no such month
+
+        while month_flag is False:
+            month = input("Enter the month: ")
+            month_flag = self._verify_value_in_the_column(year, "month", month)
+
         self.delete_month(year, month)
         self._clear_console()
         self.main_thread()
@@ -84,13 +105,12 @@ class CommandLine(Finance):
         self._clear_console()
         self.main_thread()
 
-    @staticmethod
-    def response_exit():
+    def response_exit(self):
         """
         Safely quitting the program
         """
+        self.conn.close()
         sys.exit()
-        # TODO: add closing finance.db file
 
     def _show_main_view(self):
         """
@@ -114,6 +134,20 @@ class CommandLine(Finance):
     def _verify_chosen_number(self, response):
         if response not in self.response_options.keys():
             input("You choose wrong number! Try again.")
+            return False
+
+    def _verify_value_in_the_column(self, year, column, value):
+        values = self.read_values_from_column(year, column)
+        if value not in values:
+            input(f"You choose wrong value!\n"
+                  f"Correct values: {values}")
+            return False
+
+    def _verify_column_name(self, year, column):
+        columns = self.get_columns_names(year)
+        if column not in columns:
+            input(f"You choose wrong column name!\n"
+                  f"Correct values: {columns}")
             return False
 
     def _prepare_data_for_one_month(self):
