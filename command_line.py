@@ -55,7 +55,7 @@ class CommandLine(DataVisualization):
             month = input("Enter the month: ")
             month_flag = self._verify_value_in_the_column(year, "month", month)
 
-        month, income, vat, tax, zus, payout = self.read_values_from_month(year, month)
+        month, income, vat, tax, zus, payout = self.get_values_from_month(year, month)
         input(f"Month: {month}, Income: {income}, VAT: {vat}, Tax: {tax}, ZUS: {zus}, Payout: {payout}")
         self._clear_console()
         self.main_thread()
@@ -102,6 +102,7 @@ class CommandLine(DataVisualization):
         """
         year = input("Enter the year: ")
         self.year_plot(year)
+        self.years_comparison()
         self._clear_console()
         self.main_thread()
 
@@ -149,7 +150,7 @@ class CommandLine(DataVisualization):
         :param value: Value in specified column
         :return: False when the value is wrong
         """
-        values = self.read_values_from_column(year, column)
+        values = self.get_values_from_column(year, column)
         if value not in values:
             input(f"You choose wrong value!\n"
                   f"Correct values: {values}")
