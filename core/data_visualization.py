@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from finance import Finance
+from core.finance import Finance
 
 
 class DataVisualization(Finance):

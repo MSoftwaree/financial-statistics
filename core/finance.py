@@ -61,7 +61,7 @@ class Finance:
         self.c.execute(query)
         return [value[0] for value in self.c.fetchall()]
 
-    def update_value_in_month(self, year: int, column, old_value, new_value):
+    def update_value_in_month(self, year: int, column: str, old_value, new_value):
         """
         Update value in the specific month.
         :param year: The table name

@@ -1,4 +1,4 @@
-from data_visualization import DataVisualization
+from core.data_visualization import DataVisualization
 import sys
 import os
 
@@ -224,7 +224,3 @@ class CommandLine(DataVisualization):
         Clear user console after making selection
         """
         os.system('cls')
-
-
-cmd = CommandLine()
-cmd.main_thread()
