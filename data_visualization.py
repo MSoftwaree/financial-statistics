@@ -23,7 +23,7 @@ class DataVisualization(Finance):
 
             y_axis = self.read_values_from_column(year, data)
             y_axis = [float(y) for y in y_axis]
-            plt.plot(x_axis, y_axis, colors[color_counter], label=data, linewidth=1)
+            plt.plot(x_axis, y_axis, colors[color_counter], label=data, linewidth=2)
             color_counter += 1
 
         # plot config
@@ -32,7 +32,7 @@ class DataVisualization(Finance):
 
         plt.title(f"Finance in {year}", fontsize=16)
         plt.legend()
-        plt.grid(False)
+        plt.grid(True)
 
         plt.show()
         plt.clf()
