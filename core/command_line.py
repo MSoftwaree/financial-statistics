@@ -13,8 +13,9 @@ class CommandLine(DataVisualization):
                                  "3": self.response_read_values,
                                  "4": self.response_update_values,
                                  "5": self.response_delete_month,
-                                 "6": self.response_visualize,
-                                 "7": self.response_exit}
+                                 "6": self.response_best_worst_month,
+                                 "7": self.response_visualize,
+                                 "8": self.response_exit}
         super().__init__()
 
     def main_thread(self):
@@ -96,6 +97,15 @@ class CommandLine(DataVisualization):
         self._clear_console()
         self.main_thread()
 
+    def response_best_worst_month(self):
+        year = int(input("Enter the year: "))
+        best_month, best_payout = self.get_the_best_month(year)
+        worst_month, worst_payout = self.get_the_worst_month(year)
+        print(f"The best month: {best_month} -> {best_payout} {self.currency}\n"
+              f"The worst month: {worst_month} -> {worst_payout} {self.currency}")
+        self._clear_console()
+        self.main_thread()
+
     def response_visualize(self):
         """
         Visualization of finance statistics
@@ -126,8 +136,9 @@ class CommandLine(DataVisualization):
                              "3. Read values from specific month\n"
                              "4. Update values in specific month\n"
                              "5. Delete month from table\n"
-                             "6. Visualize finance statistics\n"
-                             "7. Exit\n\n"
+                             "6. Get the best and the worst month in the year\n"
+                             "7. Visualize finance statistics\n"
+                             "8. Exit\n\n"
                              "Your choice: ")
             response_flag = self._verify_chosen_number(response)
         return response
