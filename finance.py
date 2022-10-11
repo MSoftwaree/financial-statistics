@@ -38,7 +38,7 @@ class Finance:
                                "zus": data['zus'], "payout": data['payout']})
         self.conn.commit()
 
-    def read_values_from_month(self, year: int, month: str) -> tuple:
+    def get_values_from_month(self, year: int, month: str) -> tuple:
         """
         Read all values from the specific month.
         :param year: The table name
@@ -50,7 +50,7 @@ class Finance:
 
         return self.c.fetchone()
 
-    def read_values_from_column(self, year: int, column: str) -> list:
+    def get_values_from_column(self, year: int, column: str) -> list:
         """
         Return all values from selected column
         :param year: The table name
@@ -98,7 +98,7 @@ class Finance:
         :param year: The table name
         :return: The best month with the highest payout in the whole year, returned as a tuple
         """
-        payouts = [float(payout) for payout in self.read_values_from_column(year, "payout")]
+        payouts = [float(payout) for payout in self.get_values_from_column(year, "payout")]
         best_payout = max(payouts)
         best_month = self.get_month_from_payout(year, best_payout)
         return best_month, best_payout
@@ -109,7 +109,7 @@ class Finance:
         :param year: The table name
         :return: The worst month with the smallest payout in the whole year, returned as a tuple
         """
-        payouts = [float(payout) for payout in self.read_values_from_column(year, "payout")]
+        payouts = [float(payout) for payout in self.get_values_from_column(year, "payout")]
         worst_payout = min(payouts)
         worst_month = self.get_month_from_payout(year, worst_payout)
         return worst_month, worst_payout
@@ -129,8 +129,26 @@ class Finance:
         """
         Return whole information from the table
         :param year: The table name
-        :return: List with all information for every month 
+        :return: List with all information for every month
         """
         query = f"SELECT * FROM YEAR_{year}"
         self.c.execute(query)
         return self.c.fetchall()
+
+    def get_payout_summary_from_year(self, year: int) -> float:
+        """
+        Payout summary from the whole specified year
+        :param year: The table name
+        :return: Payout summary in float type
+        """
+        payouts = [float(payout) for payout in self.get_values_from_column(year, "payout")]
+        return round(sum(payouts), 2)
+
+    def get_table_names(self) -> list:
+        """
+        Read all table names in data base file
+        :return: A complete list with table names
+        """
+        query = f"SELECT name FROM sqlite_master WHERE type = \"table\""
+        self.c.execute(query)
+        return [name[0] for name in self.c.fetchall()]
