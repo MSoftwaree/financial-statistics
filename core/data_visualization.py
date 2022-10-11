@@ -7,7 +7,7 @@ class DataVisualization(Finance):
     def __init__(self):
         super().__init__()
 
-    def year_plot(self, year):
+    def year_plot(self, year: int):
         """
         Show plot with whole year finance statistics
         :param year: The table name

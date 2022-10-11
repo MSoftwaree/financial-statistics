@@ -29,8 +29,7 @@ class CommandLine(DataVisualization):
         """
         Create new table
         """
-        year = int(input("Enter the year: "))
-        self.create_new_table(year)
+        self.create_new_table(self._get_year_from_user())
         self._clear_console()
         self.main_thread()
 
@@ -39,7 +38,7 @@ class CommandLine(DataVisualization):
         Add new month to the selected year
         """
         # TODO: add security on the event when year is wrong
-        year = int(input("Enter the year: "))
+        year = self._get_year_from_user()
         data = self._prepare_data_for_one_month()
         self.add_value_to_table(year, data)
         self._clear_console()
@@ -50,7 +49,7 @@ class CommandLine(DataVisualization):
         Read all values from the selected month
         """
         month_flag = False
-        year = int(input("Enter the year: "))
+        year = self._get_year_from_user()
 
         while month_flag is False:
             month = input("Enter the month: ")
@@ -67,7 +66,7 @@ class CommandLine(DataVisualization):
         """
 
         column_flag, value_flag = False, False
-        year = int(input("Enter the year: "))
+        year = self._get_year_from_user()
 
         while column_flag is False:
             column = input("Enter the column you want to make changes to: ")
@@ -87,7 +86,7 @@ class CommandLine(DataVisualization):
         Removing the month from the selected table
         """
         month_flag = False
-        year = int(input("Enter the year: "))
+        year = self._get_year_from_user()
 
         while month_flag is False:
             month = input("Enter the month: ")
@@ -98,7 +97,7 @@ class CommandLine(DataVisualization):
         self.main_thread()
 
     def response_best_worst_month(self):
-        year = int(input("Enter the year: "))
+        year = self._get_year_from_user()
         best_month, best_payout = self.get_the_best_month(year)
         worst_month, worst_payout = self.get_the_worst_month(year)
         print(f"The best month: {best_month} -> {best_payout} {self.currency}\n"
@@ -110,8 +109,7 @@ class CommandLine(DataVisualization):
         """
         Visualization of finance statistics
         """
-        year = input("Enter the year: ")
-        self.year_plot(year)
+        self.year_plot(self._get_year_from_user())
         self.years_comparison()
         self._clear_console()
         self.main_thread()
@@ -235,3 +233,7 @@ class CommandLine(DataVisualization):
         Clear user console after making selection
         """
         os.system('cls')
+
+    @staticmethod
+    def _get_year_from_user() -> int:
+        return int(input("Enter the year: "))
