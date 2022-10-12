@@ -1,4 +1,5 @@
 from core.data_visualization import DataVisualization
+import pandas as pd
 import sys
 import os
 
@@ -14,8 +15,9 @@ class CommandLine(DataVisualization):
                                  "4": self.response_update_values,
                                  "5": self.response_delete_month,
                                  "6": self.response_best_worst_month,
-                                 "7": self.response_visualize,
-                                 "8": self.response_exit}
+                                 "7": self.response_show_all_years,
+                                 "8": self.response_visualize,
+                                 "9": self.response_exit}
         super().__init__()
 
     def main_thread(self):
@@ -88,8 +90,31 @@ class CommandLine(DataVisualization):
         year = self._get_year_from_user()
         best_month, best_payout = self.get_the_best_month(year)
         worst_month, worst_payout = self.get_the_worst_month(year)
-        print(f"The best month: {best_month} -> {best_payout} {self.currency}\n"
+        input(f"The best month: {best_month} -> {best_payout} {self.currency}\n"
               f"The worst month: {worst_month} -> {worst_payout} {self.currency}")
+        self._clear_console()
+        self.main_thread()
+
+    def response_show_all_years(self):
+        """ Show all finance statistics in all years """
+        for table in self.get_table_names():
+            year = int(table.removeprefix("YEAR_"))
+            finance = self.get_whole_information_from_year(year)
+            print(f"{year:-^60}")
+            year_data = {"Month": [], "Income": [], "VAT": [], "Tax": [], "ZUS": [], "Payout": []}
+            for month_statistics in finance:
+                month, income, vat, tax, zus, payout = month_statistics
+                year_data["Month"].append(month)
+                year_data["Income"].append(income)
+                year_data["VAT"].append(vat)
+                year_data["Tax"].append(tax)
+                year_data["ZUS"].append(zus)
+                year_data["Payout"].append(payout)
+
+            df = pd.DataFrame(data=year_data)
+            print(df)
+            print("\n")
+        input("")
         self._clear_console()
         self.main_thread()
 
@@ -119,8 +144,9 @@ class CommandLine(DataVisualization):
                              "4. Update values in specific month\n"
                              "5. Delete month from table\n"
                              "6. Get the best and the worst month in the year\n"
-                             "7. Visualize finance statistics\n"
-                             "8. Exit\n\n"
+                             "7. Show all years\n"
+                             "8. Visualize finance statistics\n"
+                             "9. Exit\n\n"
                              "Your choice: ")
             response_flag = self._verify_chosen_number(response)
         return response
@@ -218,4 +244,5 @@ class CommandLine(DataVisualization):
 
     @staticmethod
     def _get_year_from_user() -> int:
+        """ Get year from the user """
         return int(input("Enter the year: "))

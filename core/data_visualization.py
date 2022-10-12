@@ -44,7 +44,7 @@ class DataVisualization(Finance):
         data = {}
         for table in self.get_table_names():
             year = int(table.removeprefix("YEAR_"))
-            data[table] = self.get_payout_summary_from_year(year)
+            data[str(year)] = self.get_payout_summary_from_year(year)
 
         courses = list(data.keys())
         values = list(data.values())
