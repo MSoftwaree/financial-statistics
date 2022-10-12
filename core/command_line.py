@@ -19,24 +19,18 @@ class CommandLine(DataVisualization):
         super().__init__()
 
     def main_thread(self):
-        """
-        Main thread serving the user's console
-        """
+        """ Main thread serving the user's console """
         response = self._show_main_view()
         self.response_options[response]()
 
     def response_create_new_table(self):
-        """
-        Create new table
-        """
+        """ Create new table """
         self.create_new_table(self._get_year_from_user())
         self._clear_console()
         self.main_thread()
 
     def response_add_new_month(self):
-        """
-        Add new month to the selected year
-        """
+        """ Add new month to the selected year """
         # TODO: add security on the event when year is wrong
         year = self._get_year_from_user()
         data = self._prepare_data_for_one_month()
@@ -45,9 +39,7 @@ class CommandLine(DataVisualization):
         self.main_thread()
 
     def response_read_values(self):
-        """
-        Read all values from the selected month
-        """
+        """ Read all values from the selected month """
         month_flag = False
         year = self._get_year_from_user()
 
@@ -61,10 +53,7 @@ class CommandLine(DataVisualization):
         self.main_thread()
 
     def response_update_values(self):
-        """
-        Updating the value in the selected column
-        """
-
+        """ Updating the value in the selected column """
         column_flag, value_flag = False, False
         year = self._get_year_from_user()
 
@@ -82,9 +71,7 @@ class CommandLine(DataVisualization):
         self.main_thread()
 
     def response_delete_month(self):
-        """
-        Removing the month from the selected table
-        """
+        """ Removing the month from the selected table """
         month_flag = False
         year = self._get_year_from_user()
 
@@ -97,6 +84,7 @@ class CommandLine(DataVisualization):
         self.main_thread()
 
     def response_best_worst_month(self):
+        """ Read the best and the worst month from the whole year """
         year = self._get_year_from_user()
         best_month, best_payout = self.get_the_best_month(year)
         worst_month, worst_payout = self.get_the_worst_month(year)
@@ -106,18 +94,14 @@ class CommandLine(DataVisualization):
         self.main_thread()
 
     def response_visualize(self):
-        """
-        Visualization of finance statistics
-        """
+        """ Visualization of finance statistics """
         self.year_plot(self._get_year_from_user())
         self.years_comparison()
         self._clear_console()
         self.main_thread()
 
     def response_exit(self):
-        """
-        Safely quitting the program
-        """
+        """ Safely quitting the program """
         self.conn.close()
         sys.exit()
 
@@ -229,9 +213,7 @@ class CommandLine(DataVisualization):
 
     @staticmethod
     def _clear_console():
-        """
-        Clear user console after making selection
-        """
+        """ Clear user console after making selection """
         os.system('cls')
 
     @staticmethod

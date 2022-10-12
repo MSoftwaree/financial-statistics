@@ -40,9 +40,7 @@ class DataVisualization(Finance):
         plt.close('all')
 
     def years_comparison(self):
-        """
-        Show plot comparing the whole year payout summary
-        """
+        """ Show plot comparing the whole year payout summary """
         data = {}
         for table in self.get_table_names():
             year = int(table.removeprefix("YEAR_"))
