@@ -33,7 +33,6 @@ class CommandLine(DataVisualization):
 
     def response_add_new_month(self):
         """ Add new month to the selected year """
-        # TODO: add security on the event when year is wrong
         year = self._get_year_from_user()
         data = self._prepare_data_for_one_month()
         self.add_value_to_table(year, data)
@@ -102,7 +101,7 @@ class CommandLine(DataVisualization):
             finance = self.get_whole_information_from_year(year)
             print(f"{year:-^60}")
             year_data = {"Month": [], "Income": [], "VAT": [], "Tax": [], "ZUS": [], "Payout": []}
-            for month_statistics in finance:
+            for month_statistics in finance:    # TODO: think about better way
                 month, income, vat, tax, zus, payout = month_statistics
                 year_data["Month"].append(month)
                 year_data["Income"].append(income)
@@ -151,7 +150,7 @@ class CommandLine(DataVisualization):
             response_flag = self._verify_chosen_number(response)
         return response
 
-    def _verify_chosen_number(self, response):
+    def _verify_chosen_number(self, response: str) -> bool:
         """
         Verification chosen number in main view. When is not correct, the function return False
         :param response: User response from main view
@@ -161,7 +160,17 @@ class CommandLine(DataVisualization):
             input("You choose wrong number! Try again.")
             return False
 
-    def _verify_value_in_the_column(self, year, column, value):
+    @staticmethod
+    def _verify_choosen_year(response: str) -> bool:
+        """ Verification choosen year in main view. It should be integer"""
+        try:
+            int(response)
+            return True
+        except:
+            print("You entered a wrong year!")
+            return False
+
+    def _verify_value_in_the_column(self, year: int, column: str, value: str) -> bool:
         """
         Verification whether the given value appears in a given column
         :param year: The table name
@@ -175,7 +184,7 @@ class CommandLine(DataVisualization):
                   f"Correct values: {values}")
             return False
 
-    def _verify_column_name(self, year, column):
+    def _verify_column_name(self, year: int, column: str) -> bool:
         """
         Verification if the given column name exists
         :param year: The table name
@@ -188,7 +197,7 @@ class CommandLine(DataVisualization):
                   f"Correct values: {columns}")
             return False
 
-    def _prepare_data_for_one_month(self):
+    def _prepare_data_for_one_month(self) -> dict:
         """
         Prepare all needed information for one month in specific dict format
         :return: Data in an appropriately prepared dictionary format
@@ -242,7 +251,11 @@ class CommandLine(DataVisualization):
         """ Clear user console after making selection """
         os.system('cls')
 
-    @staticmethod
-    def _get_year_from_user() -> int:
+    def _get_year_from_user(self) -> int:
         """ Get year from the user """
-        return int(input("Enter the year: "))
+        response_flag = False
+        while response_flag is False:
+            response = input("Enter the year: ")
+            response_flag = self._verify_choosen_year(response)
+        return int(response)
+
